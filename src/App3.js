@@ -1,30 +1,47 @@
 import React from 'react';
-//import PropTypes from "prop-types";
+import axios from "axios";
 
-class App3 extends React.Component{
+class App3 extends React.Component {
 
     state = {
-        isLoading : true
+        isLoading: true,
+        movies: []
     };
+
+    getMoives = async () => {
+        //const movies = await axios.get("https://yts-proxy.nomadcoders1.now.sh/list_movies.json");
+        //console.log(movies.data.data.movies);
+
+        //ES6
+        const {
+            data: {
+                data: {movies}
+            }
+        } = await axios.get("https://yts-proxy.nomadcoders1.now.sh/list_movies.json");
+        //console.log(movies);
+        //this.setState({movies : movies});
+        this.setState({movies, isLoading : false });
+        //this.setState({isLoading : false});
+    };
+
     componentDidMount() {
-        setTimeout(() =>{
-            this.setState({isLoading : false});
-        },3000)
+
+        this.getMoives();
     }
 
-    render(){
+    render() {
 
         console.log("render");
 
-        const { isLoading } = this.state;
+        const {isLoading} = this.state;
 
-        return(
-        <div>
-            {/*{this.state.isLoading ? "Loading" : "We are ready"}*/}
-            {isLoading ? "Loading.." : "We are ready"}
+        return (
+            <div>
+                {/*{this.state.isLoading ? "Loading" : "We are ready"}*/}
+                {isLoading ? "Loading.." : "We are ready"}
 
 
-        </div>);
+            </div>);
     }
 }
 
