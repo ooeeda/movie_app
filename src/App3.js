@@ -1,67 +1,23 @@
 import React from 'react';
-import axios from "axios";
-import Movie from "./movie";
-import "./app.css"
-class App3 extends React.Component {
+import { HashRouter, Route} from "react-router-dom"
+import About from "./routes/About";
+import Detail from "./routes/Detail";
+import Home from "./routes/Home";
+import Navigation from "./components/Navigation";
 
-    state = {
-        isLoading: true,
-        movies: []
-    };
-
-    getMoives = async () => {
-        //const movies = await axios.get("https://yts-proxy.nomadcoders1.now.sh/list_movies.json");
-        //console.log(movies.data.data.movies);
-
-        //ES6
-        const {
-            data: {
-                data: {movies}
-            }
-        } = await axios.get("https://yts-proxy.nomadcoders1.now.sh/list_movies.json?sort_by=rating");
-        //console.log(movies);
-        //this.setState({movies : movies});
-        this.setState({movies, isLoading : false });
-        //this.setState({isLoading : false});
-    };
-
-    componentDidMount() {
-
-        this.getMoives();
-    }
-
-    render() {
-
-        console.log("render");
+import "./routes/App.css";
 
 
-        const {isLoading, movies} = this.state;
-        //console.log(movies);
-        return (
-            <section className="container">
-                {isLoading ? (
-                        <div className="loader">
-                            <span className="loader__text">Loading...</span>
-                        </div>
-                    ) : (
-                        <div className="movies">
-                            {movies.map(movie => (
+function App3(){
+    return <HashRouter>
+        <Navigation />
+        <Route path="/" exact={true} component={Home}/>
+        <Route path="/about" component={About}/>
+       {/* <Route path="/movie-detail" component={Detail}/>*/}
+        <Route path="/movie/:id" component={Detail} />
+    </HashRouter>;
 
-                            <Movie
-                                key={movie.id}
-                                id={movie.id}
-                                year={movie.year}
-                                title={movie.title}
-                                summary={movie.summary}
-                                poster={movie.medium_cover_image}
-                                genres={movie.genres}
-                            />
-                            ))}
-                        </div>
-                    )}
-            </section>
-        );
-    }
 }
+
 
 export default App3;
